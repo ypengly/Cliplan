@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>ClipLAN</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">📋 ClipLAN</div>
+      <div id="connStatus" class="conn-status offline">● Offline</div>
+    </header>
+
+    <!-- Pairing view: shown at "/" when no token is stored, or at "/pair/:session_id" -->
+    <main id="pairingView" class="view hidden">
+      <div class="card pairing-card">
+        <h1>Connect this device</h1>
+        <p class="muted">Enter the code shown on the ClipLAN host's screen or terminal.</p>
+        <form id="pairForm">
+          <label>Your device name
+            <input type="text" id="deviceNameInput" placeholder="John's Phone" maxlength="64" required />
+          </label>
+          <label>Pairing code
+            <input type="text" id="codeInput" placeholder="123456" inputmode="numeric" maxlength="6" required />
+          </label>
+          <button type="submit">Request access</button>
+        </form>
+        <p id="pairError" class="error hidden"></p>
+        <div id="pairPending" class="hidden">
+          <p>Request sent. Waiting for approval on the host device…</p>
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Main dashboard -->
+    <main id="dashboardView" class="view hidden">
+      <section class="card">
+        <h2>Clipboard</h2>
+        <div id="currentClip" class="clip-current muted">Nothing yet — copy something to get started.</div>
+        <div class="row">
+          <textarea id="clipInput" placeholder="Type or paste text to share…" rows="2"></textarea>
+          <button id="sendClipBtn">Share</button>
+        </div>
+        <div class="row spread">
+          <label class="toggle"><input type="checkbox" id="autoSyncToggle" checked /> Auto-sync</label>
+          <button id="clearClipBtn" class="link-btn">Clear history</button>
+        </div>
+        <h3>History</h3>
+        <ul id="clipHistory" class="list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>Devices <span id="deviceCount" class="muted"></span></h2>
+        <ul id="deviceList" class="list"></ul>
+        <details id="discoveredWrap">
+          <summary>Available devices on this network</summary>
+          <ul id="discoveredList" class="list"></ul>
+        </details>
+        <details id="pendingWrap" class="hidden">
+          <summary>Pending pairing requests</summary>
+          <p class="muted small">Approve from the host machine's terminal (<code>cliplan pair</code>) or dashboard.</p>
+          <ul id="pendingList" class="list"></ul>
+        </details>
+      </section>
+
+      <section class="card">
+        <h2>Quick Send</h2>
+        <div id="dropZone" class="dropzone">
+          <p>Drop files here</p>
+          <p class="muted">or</p>
+          <button id="selectFilesBtn">Select files</button>
+          <input type="file" id="fileInput" multiple hidden />
+        </div>
+        <ul id="activeTransfers" class="list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>Recent Transfers</h2>
+        <button id="clearTransfersBtn" class="link-btn">Clear history</button>
+        <ul id="transferHistory" class="list"></ul>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
